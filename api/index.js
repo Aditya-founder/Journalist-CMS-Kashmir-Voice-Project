@@ -4,17 +4,16 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js'
 import authRoutes from './routes/auth.route.js'
 import cookieParser from 'cookie-parser';
+import postRoutes from './routes/post.route.js'
+import {cloudinaryConnect} from '../api/config/Cloudinary.js'
+import {dbConnect} from './config/DbConnect.js';
 dotenv.config();
  
-mongoose.connect(process.env.MONGO_DB)
-.then(
-    ()=>{
-        console.log("DB connect Successfully");
-    }
-)
-.catch((error)=>{
-    console.log(error)
-})
+
+
+//cloudinary connection 
+dbConnect();
+cloudinaryConnect();
 
 const app = express();
 
@@ -28,7 +27,7 @@ app.listen(3000, ()=>{
 
 app.use('/api/user/', userRoutes);
 app.use('/api/auth/', authRoutes);
-
+app.use('/api/post/', postRoutes);
 //middleware
 
 app.use((err, req, res, next)=>{

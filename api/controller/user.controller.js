@@ -7,6 +7,7 @@ export const test = (req, res)=>{
 }
 
 
+
 export const updateUser  = async(req, res, next)=>{
     console.log("requext user id", req.user.id);
     console.log("req params user id ",req.params.userId);
@@ -59,4 +60,31 @@ export const updateUser  = async(req, res, next)=>{
 
 export const deleteUser = async(req, res, next)=>{
 
+    console.log("req id ", req.user.id, req.params.userId);
+if(req.user.id!==req.params.userId ){
+    return next(errorHandler(403, "You are not alloweed to delelte this user "));
+
+}
+
+try{
+    await User.findByIdAndDelete(req.params.userId);
+    res.status(200).json({
+        message: "User deleted successfully",
+
+    })
+
+}catch(error){
+    next(error);
+
+}
+
+}
+
+export const signout = (req, res, next)=>{
+    try{
+        res.clearCookie('access-token').status(200).json('User has Been Signed out');
+        
+    }catch(error){
+        next(error);
+    }
 }

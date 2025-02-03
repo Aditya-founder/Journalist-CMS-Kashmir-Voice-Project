@@ -4,14 +4,17 @@
 
 body {
   height: 100vh;
+  font-family: "EB Garamond";
 }
 
-.ql-editor {
-  font-size: 1.05rem;
+.ql-editor{
+  font-size: 1.10rem;
 }
 
 .post-content p {
   margin-bottom: 0.5rem;
+  font-size:larger;
+  /* font-weight; */
 }
 
 .post-content h1 {
@@ -38,4 +41,8 @@ body {
 
 .dark .post-content a {
   color: red;
+}
+.post-content a:hover{
+  text-decoration: underline;
+  color: yellow;
 }

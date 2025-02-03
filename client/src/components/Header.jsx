@@ -1,37 +1,87 @@
 import { Avatar, Button, Dropdown, DropdownHeader, DropdownItem, Navbar, TextInput } from 'flowbite-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {AiOutlineSearch} from 'react-icons/ai'
 import {FaMoon, FaSun} from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 import { useSelector , useDispatch} from 'react-redux'
 import { toggleTheme } from '../redux/theme/themeslice'
+import { signoutSuccess } from '../redux/user/userslice'
+import { useNavigate } from 'react-router-dom'
+
 
 const Header = () => {
     const path = useLocation().pathname;
     const {currentUser} = useSelector(state=>state.user)
     const dispatch = useDispatch();
     const {theme}  = useSelector(state => state.theme);
+    const[searchTerm , setSearchTerm] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+
+
+    useEffect(()=>{
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromUrl = urlParams.get('searchTerm');
+        if(searchTermFromUrl){
+            setSearchTerm(searchTermFromUrl);
+            // console.log(searchTermFromUrl)
+        }
+    },[location.search])
+
+     const handleSignOut = async()=>{
+            try{
+                const res= await fetch('/api/user/signout', {
+                    method: 'POST',
+                });
+    
+                const data = res.json();
+                
+                if(!res.ok){
+                    console.log(data.message);
+                }else{
+                    dispatch(signoutSuccess());
+    
+                }
+            }catch(error){
+                console.log(error.message);
+            }
+        }
+
+        const handleSubmit = (e)=>{
+            e.preventDefault();
+            const urlParams = new URLSearchParams(location.search);
+            urlParams.set('searchTerm', searchTerm);
+
+            const searchQuery = urlParams.toString();
+            navigate(`/search?${searchQuery}`);
+
+
+
+        }
+    
 
   return (
-    <Navbar className='border-b-2 text-2xl' >
+    <Navbar className='border-b-2 text-2xl dark:bg-black' >
     <Link
     to="/"
     className="self-center whitespace-nowrap text-sm sm:text-xl 
     font-semibold dark:text-white">
-    <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 
-    via-purple-500 to-pink-500 rounded-lg text-white'>Farhan</span>
-    <span className='text-2xl'> Blog</span>
+    <span className='text-2xl font-serif'> Fizala Khan</span>
     </Link>
-    <form>
+    <form onSubmit={handleSubmit} className=''>
         <TextInput
+        
         type='text'
         placeholder='Search...'
         rightIcon={AiOutlineSearch}
-        className='hidden lg:inline'
+        className='hidden lg:inline dark:bg-black '
+         value={searchTerm}
+         onChange={(e)=> setSearchTerm(e.target.value)}
         />
     </form>
-    <Button className='w-12 h-10 lg:hidden' color='gray' pill>
+
+    <Button onClick={()=>navigate('/search')} className='w-12 h-10 lg:hidden' color='gray' pill>
         <AiOutlineSearch />
     </Button>
     
@@ -44,14 +94,14 @@ const Header = () => {
             }
          </Button>
     {
-        currentUser ? (
+        currentUser && (
         <Dropdown 
         arrowIcon={false}
         inline
         label = {
             <Avatar
             alt='user'
-            img = {currentUser.profilePicture}
+            img = "https://res.cloudinary.com/dt8fsqka6/image/upload/v1738603951/jfaxfuiizmbj9dk6hqmu.png"
             rounded
             />
         }
@@ -66,17 +116,9 @@ const Header = () => {
             </Dropdown.Item>
             </Link>
             <Dropdown.Divider/>
-            <Dropdown.Item>Sign Out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
 
-        </Dropdown>) : (
-
-        <Link to="/signin">
-        <Button color='pink'>
-            Sign In
-         </Button>
-         </Link> 
-
-        )
+        </Dropdown>) 
     }
         
          <Navbar.Toggle/>
@@ -90,15 +132,15 @@ const Header = () => {
                 </Link>
             </Navbar.Link>  
 
-        <Navbar.Link  active={path==='/about' } as={'div'}>
-                <Link to="/about">
-                    About
+        <Navbar.Link  active={path==='/blogs' } as={'div'}>
+                <Link to="/blogs">
+                    Blogs
                 </Link>
             </Navbar.Link>  
 
-        <Navbar.Link  active={path==='/projects'} as={'div'}>
-                <Link to="/projects">
-                    Project
+        <Navbar.Link  active={path==='/contact'} as={'div'}>
+                <Link to="/contact">
+                    Email Us
                 </Link>
             </Navbar.Link>    
          </Navbar.Collapse>   

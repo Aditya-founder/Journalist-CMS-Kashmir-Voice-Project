@@ -5,8 +5,10 @@ export default {
     './src/**/*.{js,ts,jsx,tsx}',
     'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
   ],
-  theme: {
-    extend: {},
+  extend: {
+    fontFamily: {
+      'optima': ['Optima', 'serif'],
+    },
   },
   plugins: [
     require('flowbite/plugin'),
