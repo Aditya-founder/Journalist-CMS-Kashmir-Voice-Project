@@ -7,7 +7,7 @@ import OAuth from '../components/OAuth'
 // import { useSelector } from 'react-redux'
 
 
-const Signin = () => {  
+const Admin = () => {  
   
   const [formData, setFormData] = useState({});
    const dispatch = useDispatch();
@@ -110,4 +110,4 @@ const Signin = () => {
   )
 }
 
-export default Signin
+export default Admin

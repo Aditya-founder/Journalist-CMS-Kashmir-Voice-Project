@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Link } from 'react-router-dom'
+// import { BrowserRouter, Link } from 'react-router-dom'
 // import {Button, Navbar} from 'flowbite-react'
 
 import { Routes, Route } from 'react-router-dom'
@@ -7,7 +7,7 @@ import Home from './pages/Home'
 import Blogs from './pages/Blogs'
 import Dashboard from './pages/Dashboard'
 // import Signup from './pages/Signup
-import Signin from './pages/Signin'
+// import Signin from './pages/Admin'
 
 // import Projects from './pages/Projects'
 import Header from './components/Header'
@@ -23,6 +23,7 @@ import Contact from './components/Contact'
 import "@fontsource/eb-garamond"; // Defaults to weight 400
 import "@fontsource/eb-garamond/400.css"; // Specify weight
 import "@fontsource/eb-garamond/400-italic.css"; // Specify weight and style
+import Admin from './pages/Admin'
 
 const App = () => {
   return (
@@ -33,7 +34,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/blogs" element={<Blogs />} />
         {/* <Route path="/signup" element={<Signup />} /> */}
-        <Route path="/admin" element={<Signin/>} />
+        <Route path="/admin" element={<Admin/>} />
         <Route path='/search' element={<Search/>}/>
         <Route element={<PrivateRoute/>}>
         <Route path="/dashboard" element={<Dashboard />} />
