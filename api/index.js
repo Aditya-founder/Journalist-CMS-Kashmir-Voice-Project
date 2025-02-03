@@ -1,42 +1,58 @@
 import express from 'express';
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
-import userRoutes from './routes/user.route.js'
-import authRoutes from './routes/auth.route.js'
+import userRoutes from './routes/user.route.js';
+import authRoutes from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
-import postRoutes from './routes/post.route.js'
-import {cloudinaryConnect} from '../api/config/Cloudinary.js'
-import {dbConnect} from './config/DbConnect.js';
+import postRoutes from './routes/post.route.js';
+import { cloudinaryConnect } from '../api/config/Cloudinary.js';
+import { dbConnect } from './config/DbConnect.js';
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Load environment variables
 dotenv.config();
- 
 
-
-//cloudinary connection 
+// Cloudinary & Database Connection
 dbConnect();
-cloudinaryConnect();
+// cloudinaryConnect();  // Uncomment if needed
+
+// Fix for ES Modules (__dirname equivalent)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Middlewares
 app.use(express.json());      
 app.use(cookieParser());
-app.listen(3000, ()=>{
-    console.log("server is runnig at 3000");
-})
 
-
-
+// API Routes
 app.use('/api/user/', userRoutes);
 app.use('/api/auth/', authRoutes);
 app.use('/api/post/', postRoutes);
-//middleware
 
-app.use((err, req, res, next)=>{
+// Serve frontend from Vite build
+const clientPath = path.join(__dirname, "../client/dist");
+app.use(express.static(clientPath));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(clientPath, 'index.html'));
+});
+
+// Global Error Handling Middleware
+app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message  = err.message || "Internal Server Error";
-
     res.status(statusCode).json({
-        success:false,
+        success: false,
         statusCode,
         message
     });
-})
+});
+
+// Start Server (Use PORT from Render)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

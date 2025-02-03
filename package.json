@@ -21,10 +21,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "dev": "nodemon api/index.js",
-    "start": "node api/index.js"
-  },
+
+"scripts": {
+  "dev": "nodemon api/index.js",
+  "start": "node api/index.js",
+  "build": "cd client && npm install && npm run build"
+},
+
   "keywords": [],
   "author": "",
   "license": "ISC",
