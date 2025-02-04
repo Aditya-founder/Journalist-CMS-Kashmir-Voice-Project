@@ -34,6 +34,7 @@ function reloadWebsite(){
         console.log(`Error  : ${error.message}`);
     })
 }
+reloadWebsite();
 
 // Middlewares
 app.use(express.json());      
