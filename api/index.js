@@ -34,7 +34,8 @@ function reloadWebsite(){
         console.log(`Error  : ${error.message}`);
     })
 }
-reloadWebsite();
+
+setInterval(reloadWebsite, interval);
 
 // Middlewares
 app.use(express.json());      
