@@ -24,7 +24,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-const url = ``
+const url = `https://mern-blog-0a8p.onrender.com`;
 const interval  = 30000;
 function reloadWebsite(){
     axios.get(url).then((response)=>{
