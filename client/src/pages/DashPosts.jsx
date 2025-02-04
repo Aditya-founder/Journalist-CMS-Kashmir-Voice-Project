@@ -1,4 +1,4 @@
-import { Table, Modal , Button} from 'flowbite-react';
+import { Table, Modal , Button, Spinner} from 'flowbite-react';
 import React, { useEffect , useState} from 'react'
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux'
@@ -11,7 +11,7 @@ const DashPosts = () => {
   const[showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const[postIdToDelete , setPostIdToDelete] = useState('');
-
+  const[loading, setLoading ] = useState(false);
 
   // console.log("userposts ",userPosts);
   // console.log("currentuser id" , currentUser._id);
@@ -20,6 +20,7 @@ const DashPosts = () => {
     const fetchPosts = async()=>{
    
       try{
+        setLoading(true);
         const res  = await fetch(`/api/post/getposts?userId=${currentUser._id}`)
         const data = await res.json()
         if(res.ok){
@@ -31,8 +32,10 @@ const DashPosts = () => {
         }
         // console.log("res data" , data)         
 
+        setLoading(false);
       }catch(error){
         console.log(error);
+        setLoading(false);
 
       }
     }
@@ -92,8 +95,19 @@ const DashPosts = () => {
 
     }
   }
+    
   return (
-    <div className='table-auto overflow-x-scroll md:mx-auto p-3 
+    <>
+    {
+      loading ? (
+        <div className='flex flex-col gap-2 justify-center w-full items-center'>
+
+          <Spinner />
+          <span>Loading...</span>
+        </div>
+      ) 
+      : (
+        <div className='table-auto overflow-x-scroll md:mx-auto p-3 
     scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300
     dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500
     '>
@@ -158,7 +172,7 @@ const DashPosts = () => {
             }
           </>
         ) : 
-        (
+        ( 
           <p>You have No Posts yet !! </p>
         ) 
       }
@@ -191,8 +205,11 @@ const DashPosts = () => {
                   </Modal.Body>
               </Modal>
 
-
+      
     </div>
+      )
+    }
+    </>
   )
 }
 

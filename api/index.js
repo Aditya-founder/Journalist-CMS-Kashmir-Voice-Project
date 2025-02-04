@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
@@ -9,6 +9,7 @@ import { cloudinaryConnect } from '../api/config/Cloudinary.js';
 import { dbConnect } from './config/DbConnect.js';
 import path from "path";
 import { fileURLToPath } from "url";
+import axios from 'axios';
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +23,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+const url = ``
+const interval  = 30000;
+function reloadWebsite(){
+    axios.get(url).then((response)=>{
+        console.log("website reloaded");
+    })
+    .catch((error)=>{
+        console.log(`Error  : ${error.message}`);
+    })
+}
 
 // Middlewares
 app.use(express.json());      

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from 'react-icons/fa';
 import PostCard from '../components/PostCard';
+import { Spinner } from 'flowbite-react';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -93,7 +94,10 @@ const Home = () => {
      <div className="mt-12 lg:mt-[14vh] px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white text-center mb-4">Latest Blog Posts</h2>
         {loading ? (
+          <>
+          <Spinner/>
           <p className="text-center ">Loading posts...</p>
+          </>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-4 gap-6">
             {posts.map((post, index) => (
