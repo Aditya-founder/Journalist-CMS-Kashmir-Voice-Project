@@ -39,51 +39,98 @@ export const create = async(req, res, next)=>{
 
 
 
+// export const getPosts = async (req, res, next) => {
+//     try {
+//       const startIndex = parseInt(req.query.startIndex) || 0;
+//       const limit = parseInt(req.query.limit) || 9;
+//       const sortDirection = req.query.order === 'asc' ? 1 : -1;
+//       const posts = await Post.find({
+//         ...(req.query.userId && { userId: req.query.userId }),
+//         ...(req.query.category && { category: req.query.category }),
+//         ...(req.query.slug && { slug: req.query.slug }),
+//         ...(req.query.postId && { _id: req.query.postId }),
+//         ...(req.query.searchTerm && {
+//           $or: [
+//             { title: { $regex: req.query.searchTerm, $options: 'i' } },
+//             { content: { $regex: req.query.searchTerm, $options: 'i' } },
+//           ],
+//         }),
+//       })
+//         .sort({ updatedAt: sortDirection })
+//         .skip(startIndex)
+//         .limit(limit);
+  
+//       const totalPosts = await Post.countDocuments();
+  
+//       const now = new Date();
+  
+//       const oneMonthAgo = new Date(
+//         now.getFullYear(),
+//         now.getMonth() - 1,
+//         now.getDate()
+//       );
+  
+//       const lastMonthPosts = await Post.countDocuments({
+//         createdAt: { $gte: oneMonthAgo },
+//       });
+  
+//       res.status(200).json({
+//         posts,
+//         totalPosts,
+//         lastMonthPosts,
+//       });
+//     } catch (error) {
+//       next(error);
+//     }
+//   };
+  
+
 export const getPosts = async (req, res, next) => {
-    try {
-      const startIndex = parseInt(req.query.startIndex) || 0;
-      const limit = parseInt(req.query.limit) || 9;
+  try {
+      const page = parseInt(req.query.page) || 1; // Get the page number, default to 1
+      const limit = parseInt(req.query.limit) || 9; // Default limit is 9 per page
+      const startIndex = (page - 1) * limit; // Calculate the correct start index
       const sortDirection = req.query.order === 'asc' ? 1 : -1;
+
       const posts = await Post.find({
-        ...(req.query.userId && { userId: req.query.userId }),
-        ...(req.query.category && { category: req.query.category }),
-        ...(req.query.slug && { slug: req.query.slug }),
-        ...(req.query.postId && { _id: req.query.postId }),
-        ...(req.query.searchTerm && {
-          $or: [
-            { title: { $regex: req.query.searchTerm, $options: 'i' } },
-            { content: { $regex: req.query.searchTerm, $options: 'i' } },
-          ],
-        }),
+          ...(req.query.userId && { userId: req.query.userId }),
+          ...(req.query.category && req.query.category !== 'all' && { category: req.query.category }),
+          ...(req.query.excludeCategory && { category: { $ne: req.query.excludeCategory } }),          
+          ...(req.query.slug && { slug: req.query.slug }),
+          ...(req.query.postId && { _id: req.query.postId }),
+          ...(req.query.searchTerm && {
+              $or: [
+                  { title: { $regex: req.query.searchTerm, $options: 'i' } },
+                  { content: { $regex: req.query.searchTerm, $options: 'i' } },
+              ],
+          }),
       })
-        .sort({ updatedAt: sortDirection })
-        .skip(startIndex)
-        .limit(limit);
-  
+          .sort({ updatedAt: sortDirection })
+          .skip(startIndex) // Correct pagination
+          .limit(limit);
+
       const totalPosts = await Post.countDocuments();
-  
+
       const now = new Date();
-  
       const oneMonthAgo = new Date(
-        now.getFullYear(),
-        now.getMonth() - 1,
-        now.getDate()
+          now.getFullYear(),
+          now.getMonth() - 1,
+          now.getDate()
       );
-  
+
       const lastMonthPosts = await Post.countDocuments({
-        createdAt: { $gte: oneMonthAgo },
+          createdAt: { $gte: oneMonthAgo },
       });
-  
+
       res.status(200).json({
-        posts,
-        totalPosts,
-        lastMonthPosts,
+          posts,
+          totalPosts,
+          lastMonthPosts,
       });
-    } catch (error) {
+  } catch (error) {
       next(error);
-    }
-  };
-  
+  }
+};
 
 
 export const deletepost = async (req, res, next)=>{

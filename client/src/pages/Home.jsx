@@ -1,26 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from 'react-icons/fa';
 import PostCard from '../components/PostCard';
-import { Spinner } from 'flowbite-react';
+import { Button, Spinner } from 'flowbite-react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const[blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const[loading1, setLoading1] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      const res = await fetch('/api/post/getposts');
-      if (!res.ok) {
+    try{
+      const fetchPosts = async () => {
+        setLoading(true);
+        const res = await fetch('/api/post/getposts?limit=9&category=Article&order=asc');
+        if (!res.ok) {
+          setLoading(false);
+          return;
+        }
+        const data = await res.json();
+        setPosts(data.posts);
         setLoading(false);
+      };
+      fetchPosts();
+    }
+    catch (error) {
+      console.error(error);
+      }
+  }, []);
+
+  
+  useEffect(() => {
+    try{
+    const fetchPosts = async () => {
+      setLoading1(true);
+      const res = await fetch(`/api/post/getposts?limit=9&excludeCategory=Article`);
+      if (!res.ok) {
+        setLoading1(false);
         return;
       }
       const data = await res.json();
-      setPosts(data.posts);
-      setLoading(false);
+      setBlogs(data.posts);
+      setLoading1(false);
     };
     fetchPosts();
+  }
+  catch (error) {
+    console.error(error);
+    }
   }, []);
+
+
 
   return (
     <>
@@ -49,37 +82,22 @@ const Home = () => {
       </p>
 
       <p className="text-gray-800 dark:text-gray-200 text-2xl leading-relaxed">
-        If you're curious to see where my words have taken me, explore my work here.
+        If you're curious to see where my words have taken me, <a href="https://www.instagram.com/fizalalalala"  className='text-teal-400 cursor-pointer hover:underline'>explore my work here.</a>
       </p>
 
       {/* Social Links */}
       <div className="flex justify-center md:justify-start space-x-4 pt-4">
         <a 
-          href="https://x.com/banihalich?mx=2" 
-          className="text-black hover:opacity-75 transition-opacity"
-          aria-label="Twitter"
-        >
-          <FaTwitter className="w-6 h-6 dark:text-gray-200" />
-        </a>
-        <a 
-          href="https://www.linkedin.com/in/fizala-khan-259a5b1b1" 
-          className="text-black hover:opacity-75 transition-opacity"
-          aria-label="LinkedIn"
-        >
-          <FaLinkedin className="w-6 h-6 dark:text-gray-200" />
-        </a>
-        
-        <a 
           href="https://www.facebook.com/fizala.khan.9" 
           className="text-black hover:opacity-75 transition-opacity"
-          aria-label="LinkedIn"
+          aria-label="facebook"
         >
           <FaFacebook className="w-6 h-6 dark:text-gray-200" />
         </a>
         <a 
-          href="https://www.facebook.com/fizala.khan.9" 
+          href="https://www.instagram.com/fizalalalala" 
           className="text-black hover:opacity-75 transition-opacity"
-          aria-label="LinkedIn"
+          aria-label="Instagram"
         >
           <FaInstagram className="w-6 h-6 dark:text-gray-200" />
         </a>
@@ -90,13 +108,13 @@ const Home = () => {
 </div>
 
 
-     {/* Blog Posts Section */}
+     {/* article Posts Section */}
      <div className="mt-12 lg:mt-[14vh] px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white text-center mb-4">Latest Blog Posts</h2>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white text-center mb-4">Latest Articles</h2>
         {loading ? (
           <>
           <Spinner/>
-          <p className="text-center ">Loading posts...</p>
+          <p className="text-center ">Loading Articles...</p>
           </>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-4 gap-6">
@@ -105,7 +123,33 @@ const Home = () => {
             ))}
           </div>
         )}
+       
+        <Button onClick={()=> navigate('/article')} outline  className='mx-auto mt-6'>See More Articles</Button>
+        
       </div>
+
+      
+     {/* article Posts Section */}
+     <div className="mt-12 lg:mt-[14vh] px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white text-center mb-4">Latest Blogs</h2>
+        {loading1 ? (
+          <>
+          <Spinner/>
+          <p className="text-center ">Loading Blogs...</p>
+          </>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-4 gap-6">
+            {blogs.map((post, index) => (
+              <PostCard key={index} post={post} />
+            ))}
+          </div>
+        )}
+
+        <Button onClick={()=> navigate('/blogs')} outline  className='mx-auto mt-6'>See More Blogs</Button>
+        
+        
+      </div>
+
     </>
   );
 };

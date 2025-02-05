@@ -24,6 +24,7 @@ import "@fontsource/eb-garamond"; // Defaults to weight 400
 import "@fontsource/eb-garamond/400.css"; // Specify weight
 import "@fontsource/eb-garamond/400-italic.css"; // Specify weight and style
 import Admin from './pages/Admin'
+import Article from './pages/Article'
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/blogs" element={<Blogs />} />
         {/* <Route path="/signup" element={<Signup />} /> */}
         <Route path="/admin" element={<Admin/>} />
+        <Route path='/article' element={<Article/>}/>
         <Route path='/search' element={<Search/>}/>
         <Route element={<PrivateRoute/>}>
         <Route path="/dashboard" element={<Dashboard />} />
