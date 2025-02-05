@@ -48,25 +48,30 @@ const DashPosts = () => {
   }, [currentUser._id])
 
 
-  const handleShowMore = async()=>{
-    const startIndex =  userPosts.length;
-    try{
-      const res = await fetch(`/api/post/getposts?userId=${currentUser._id}&startIndex=
-        ${startIndex}`);
-        const data = await res.json();
-
-        if(res.ok){
-          setUserPosts((prev)=> [...prev, ...data.posts]);
-          if(data.posts.length <9 ){
-            setShowMore(false);
-          }
+  const handleShowMore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      const res = await fetch(`/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`);
+      const data = await res.json();
+  
+      if (res.ok) {
+        // Ensure new posts are added, and not the ones that already exist
+        setUserPosts((prev) => {
+          const newPosts = data.posts.filter(post => !prev.some(existingPost => existingPost._id === post._id));
+          return [...prev, ...newPosts];
+        });
+  
+        // Hide the "Show more" button if there are fewer than 9 posts in the new batch
+        if (data.posts.length < 9) {
+          setShowMore(false);
         }
-
-    }catch(error){
+      }
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
+  
   const handleDelete = async()=>{
     setShowModal(false);
 
@@ -77,8 +82,8 @@ const DashPosts = () => {
         }
       )
       const data = res.json();
-      console.log("data",data );
-      console.log("respnse", res);
+      // console.log("data",data );
+      // console.log("respnse", res);
       if(!res.ok){
         console.log(data.message);
         return ;
@@ -163,13 +168,13 @@ const DashPosts = () => {
               ))
             }
             </Table>
-            {
+            {/* {
               showMore && (
                 <button onClick={handleShowMore} className='w-full hover:underline text-teal-500 self-center text-sm py-7'>
                   Show more
                 </button>
               )
-            }
+            } */}
           </>
         ) : 
         ( 

@@ -88,7 +88,7 @@ export const create = async(req, res, next)=>{
 export const getPosts = async (req, res, next) => {
   try {
       const page = parseInt(req.query.page) || 1; // Get the page number, default to 1
-      const limit = parseInt(req.query.limit) || 9; // Default limit is 9 per page
+      const limit = parseInt(req.query.limit); // Default limit is 9 per page
       const startIndex = (page - 1) * limit; // Calculate the correct start index
       const sortDirection = req.query.order === 'asc' ? 1 : -1;
 
