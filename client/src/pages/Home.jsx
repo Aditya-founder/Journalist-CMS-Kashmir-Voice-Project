@@ -62,7 +62,7 @@ const Home = () => {
   <div className="grid md:grid-cols-1 gap-12">
     {/* Content Section */}
     <div className="space-y-6 text-center md:text-left">
-      <h1 className="text-4xl font-light mb-8 font-['Optima'] text-center">“Hello! Welcome to My Profile”</h1>
+      <h1 className="text-4xl font-light mb-8 font-['Optima'] text-center">“Hello! Welcome to my profile.”</h1>
       <div className='h-1 bg-gray-700'></div>
 
       <p className="text-gray-800 text-2xl dark:text-gray-200  leading-relaxed">
