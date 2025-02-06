@@ -62,7 +62,7 @@ const Home = () => {
   <div className="grid md:grid-cols-1 gap-12">
     {/* Content Section */}
     <div className="space-y-6 text-center md:text-left">
-      <h1 className="text-4xl font-light mb-8 font-['Optima'] text-center">Hello! Welcome to my profile</h1>
+      <h1 className="text-4xl font-light mb-8 font-['Optima'] text-center">“Hello! Welcome to My Profile”</h1>
       <div className='h-1 bg-gray-700'></div>
 
       <p className="text-gray-800 text-2xl dark:text-gray-200  leading-relaxed">
@@ -82,7 +82,7 @@ const Home = () => {
       </p>
 
       <p className="text-gray-800 dark:text-gray-200 text-2xl leading-relaxed">
-        If you're curious to see where my words have taken me, <a href="https://www.instagram.com/fizalalalala"  className='text-teal-400 cursor-pointer hover:underline'>explore my work here.</a>
+        If you're curious to see where my words have taken me, <a href="https://linktr.ee/fizalakhan"  className='text-teal-400 cursor-pointer hover:underline'>explore my work here.</a>
       </p>
 
       {/* Social Links */}
