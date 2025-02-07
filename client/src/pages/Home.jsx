@@ -86,7 +86,7 @@ const Home = () => {
       </p>
 
       {/* Social Links */}
-      <div className="flex justify-center md:justify-start space-x-4 pt-4">
+      {/* <div className="flex justify-center md:justify-start space-x-4 pt-4">
         <a 
           href="https://www.facebook.com/fizala.khan.9" 
           className="text-black hover:opacity-75 transition-opacity"
@@ -102,7 +102,7 @@ const Home = () => {
           <FaInstagram className="w-6 h-6 dark:text-gray-200" />
         </a>
 
-      </div>
+      </div> */}
     </div>
   </div>
 </div>
