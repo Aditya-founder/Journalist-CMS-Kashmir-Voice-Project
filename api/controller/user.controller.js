@@ -49,7 +49,11 @@ export const updateUser  = async(req, res, next)=>{
                 profilePicture:req.body.profilePicture
             },
         },{new:true});
-        
+        if(!updatedUser){
+            return next(errorHandler(404, "User not found"));
+        }
+
+        return res.status(200).json(updatedUser);
     }catch(error){
         console.log(error)
         next(error);

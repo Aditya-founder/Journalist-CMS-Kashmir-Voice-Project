@@ -39,6 +39,7 @@ const DashProfile = () => {
         try{
           
             dispatch(updateStart());
+            // console.log("dispatch update start")
             const res  = await fetch(`/api/user/update/${currentUser._id}`, {
                 method : 'PUT',
                 headers : {
@@ -46,19 +47,23 @@ const DashProfile = () => {
                 },
                 body : JSON.stringify(formData),
             });
-            console.log("update api call hogyi ");
+            // console.log("update api call hogyi ");
             
             const data = await res.json();   
-            console.log("data from upate ", data);
+            // console.log("data from upate ", data);
+            
 
             if(!res.ok){
                 dispatch(updateFailure(data.message));
+                console.log("dispatch failure")
                 setupdateUserError(data.message);
                 return ;
             }
+            
             else{
                 // console.log("going to updatesyccess ");
                 dispatch(updateSuccess(data));
+                // console.log("dispatch update success. ". data);
                 // console.log("done update success persiste");
                 setUpdateUserSuccess('User Profile Update Successfull');
             }
@@ -174,7 +179,7 @@ const DashProfile = () => {
         onChange={handleChange}
         />
 
-        <TextInput type='password' 
+        <TextInput type='text' 
         id='password' 
         placeholder='Password' 
         

@@ -33,14 +33,17 @@ const Header = () => {
             try{
                 const res= await fetch('/api/user/signout', {
                     method: 'POST',
+                    credentials:'include',
                 });
     
                 const data = res.json();
                 
                 if(!res.ok){
                     console.log(data.message);
+                    return ;
                 }else{
                     dispatch(signoutSuccess());
+                    navigate('/');
     
                 }
             }catch(error){
@@ -55,8 +58,6 @@ const Header = () => {
 
             const searchQuery = urlParams.toString();
             navigate(`/search?${searchQuery}`);
-
-
 
         }
     
