@@ -30,9 +30,6 @@ To solve this:
 🔁 A background ping function runs every 30 seconds from the backend, keeping the app active and live 24/7 without requiring constant user visits — effectively avoiding downtime while staying within the free Render limits.
 
 🚀 Getting Started (Local Setup)
-bash
-Copy
-Edit
 # Clone the repository
 git clone https://github.com/your-username/portfolio-blog-client.git
 cd portfolio-blog-client
@@ -46,6 +43,8 @@ npm run dev
 cd ../server
 npm install
 npm run dev
+
+
 Make sure you add your .env variables for MongoDB URI and other configs in the server/ folder.
 
 🔒 Admin Access
